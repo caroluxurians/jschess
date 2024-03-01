@@ -1,10 +1,9 @@
+import { getPosFromDivId, compareCoords } from "./helperFunctions";
+console.log(getPosFromDivId)
 const board = document.querySelector("#gameboard");
 const trash = document.querySelector("#trash");
 
 const arr = [0, 1, 2, 3, 4, 5, 6, 7];
-
-const getPosFromDivId = (id) => ({ x: Number(id[1]), y: Number(id[2]) });
-const compareCoords = (set1, set2) => set1.x === set2.x && set1.y === set2.y;
 
 const pieces = [
   {

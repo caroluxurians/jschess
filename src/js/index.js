@@ -73,21 +73,48 @@ const checkMove = (selectedPiece, possibleNewPosition) => {
       }
     }
   }
-  if (pieceType === "r") {
-    if (curX === posX
-      || curY === posY) {
-      const positionRange = [curY, posY]
-        .sort((a, b) => Number(a) - Number(b));
-      if (curX === posX) {
-        const numbersBetween = arr.slice(positionRange[0] + 1, positionRange[1]);
-        console.log(numbersBetween);
-        const positionsBetween = [];
-        numbersBetween.forEach((number) => {
-          positionsBetween.push({ x: curX, y: number });
+  if (["r", "b", "q"].includes(pieceType)) {
+    if ((curX === posX || curY === posY) && pieceType !== "b") {
+      const positionRangeY = [curY, posY]
+        .sort((a, b) => a - b);
+      const positionRangeX = [curX, posX]
+        .sort((a, b) => a - b);
+      // const numbersBetween = arr.slice(positionRangeY[0] + 1, positionRangeY[1]);
+
+      const numbersBetweenHorVer = curX === posX
+        ? arr.slice(positionRangeY[0] + 1, positionRangeY[1])
+        : arr.slice(positionRangeX[0] + 1, positionRangeX[1]);
+      const positionsBetweenHorVer = [];
+      numbersBetweenHorVer.forEach((number) => {
+        positionsBetweenHorVer.push(curX === posX
+          ? { x: curX, y: number }
+          : { x: number, y: curY });
+      });
+      // eslint-disable-next-line no-restricted-syntax
+      for (const position of positionsBetweenHorVer) {
+        if (pieces.some((piece) => compareCoords(piece.coordinates, position))) {
+          return false;
+        }
+      }
+      if (pieceOnTarget) {
+        pieceOnTarget.coordinates = { x: -1, y: -1 };
+        return true;
+      }
+      return true;
+    }
+    if ((curX !== posX && curY !== posY) && pieceType !== "r") {
+      if (Math.abs(curX - posX) === Math.abs(curY - posY)) {
+        const positionRangeDiaX = [curX, posX]
+          .sort((a, b) => a - b);
+        const numbersBetweenDia = arr
+          .slice(positionRangeDiaX[0] + 1, positionRangeDiaX[1])
+          .sort((a, b) => (curX < posX ? a - b : b - a));
+        const positionsBetweenDia = numbersBetweenDia.map((number, i) => {
+          const offset = i + 1;
+          return { x: number, y: curY > posY ? curY - offset : curY + offset };
         });
-        console.log(positionsBetween);
         // eslint-disable-next-line no-restricted-syntax
-        for (const position of positionsBetween) {
+        for (const position of positionsBetweenDia) {
           if (pieces.some((piece) => compareCoords(piece.coordinates, position))) {
             return false;
           }
@@ -96,8 +123,9 @@ const checkMove = (selectedPiece, possibleNewPosition) => {
           pieceOnTarget.coordinates = { x: -1, y: -1 };
           return true;
         }
+        return true;
       }
-      return true;
+      return false;
     }
   }
   return false;

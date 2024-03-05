@@ -128,6 +128,29 @@ const checkMove = (selectedPiece, possibleNewPosition) => {
       return false;
     }
   }
+  if (pieceType === "k") {
+    console.log("aa");
+    if ((posX === curX || posX === curX + 1 || posX === curX - 1)
+      && (posY === curY || posY === curY + 1 || posY === curY - 1)) {
+      if (pieceOnTarget) {
+        pieceOnTarget.coordinates = { x: -1, y: -1 };
+        return true;
+      }
+      return true;
+    }
+  }
+  if (pieceType === "h") {
+    if (((posX === curX + 2 || posX === curX - 2)
+      && (posY === curY + 1 || posY === curY - 1))
+      || ((posX === curX + 1 || posX === curX - 1)
+        && (posY === curY + 2 || posY === curY - 2))) {
+      if (pieceOnTarget) {
+        pieceOnTarget.coordinates = { x: -1, y: -1 };
+        return true;
+      };
+      return true;
+    }
+  }
   return false;
 };
 

@@ -147,7 +147,7 @@ const checkMove = (selectedPiece, possibleNewPosition) => {
       if (pieceOnTarget) {
         pieceOnTarget.coordinates = { x: -1, y: -1 };
         return true;
-      };
+      }
       return true;
     }
   }

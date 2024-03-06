@@ -52,22 +52,17 @@ const checkMove = (selectedPiece, possibleNewPosition) => {
     const direction = isPieceBlack ? -1 : 1;
     if (curX === posX) {
       if (curY === posY + 1 * direction) {
-        if (!pieceOnTarget) {
-          return true;
-        }
+        return true;
       }
 
       if (curY === (isPieceBlack ? 1 : 6)
         && curY === posY + 2 * direction) {
-        if (!pieceOnTarget) {
-          return true;
-        }
+        return true;
       }
     }
     if (posX + 1 === curX || posX - 1 === curX) {
       if (curY === posY + 1 * direction) {
         if (pieceOnTarget) {
-          pieceOnTarget.coordinates = { x: -1, y: -1 };
           return true;
         }
       }
@@ -95,10 +90,6 @@ const checkMove = (selectedPiece, possibleNewPosition) => {
         if (pieces.some((piece) => compareCoords(piece.coordinates, position))) {
           return false;
         }
-      }
-      if (pieceOnTarget) {
-        pieceOnTarget.coordinates = { x: -1, y: -1 };
-        return true;
       }
       return true;
     }
@@ -128,10 +119,6 @@ const checkMove = (selectedPiece, possibleNewPosition) => {
     console.log("aa");
     if ((posX === curX || posX === curX + 1 || posX === curX - 1)
       && (posY === curY || posY === curY + 1 || posY === curY - 1)) {
-      if (pieceOnTarget) {
-        pieceOnTarget.coordinates = { x: -1, y: -1 };
-        return true;
-      }
       return true;
     }
   }

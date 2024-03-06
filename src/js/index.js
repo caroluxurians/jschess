@@ -47,7 +47,7 @@ const checkMove = (selectedPiece, possibleNewPosition) => {
   const posY = possibleNewPosition.y;
   const pieceOnTarget = pieces
     .find((piece) => compareCoords(piece.coordinates, possibleNewPosition));
-
+  // const pieceOnTargetColor = pieceOnTarget?.id[1];  
   if (pieceType === "p") {
     const direction = isPieceBlack ? -1 : 1;
     if (curX === posX) {
@@ -119,10 +119,6 @@ const checkMove = (selectedPiece, possibleNewPosition) => {
             return false;
           }
         }
-        if (pieceOnTarget) {
-          pieceOnTarget.coordinates = { x: -1, y: -1 };
-          return true;
-        }
         return true;
       }
       return false;
@@ -144,10 +140,6 @@ const checkMove = (selectedPiece, possibleNewPosition) => {
       && (posY === curY + 1 || posY === curY - 1))
       || ((posX === curX + 1 || posX === curX - 1)
         && (posY === curY + 2 || posY === curY - 2))) {
-      if (pieceOnTarget) {
-        pieceOnTarget.coordinates = { x: -1, y: -1 };
-        return true;
-      }
       return true;
     }
   }
@@ -174,8 +166,23 @@ arr.forEach((col) => {
       const possibleNewPosition = getPosFromDivId(targetDivId);
       const selectedPiece = pieces.find((el) => el.id === idOfPieceBeingMoved);
       const isMoveLegal = checkMove(selectedPiece, possibleNewPosition);
+      const pieceOnTarget = pieces
+        .find((piece) => compareCoords(piece.coordinates, possibleNewPosition));
+      console.log(pieceOnTarget); 
+      const pieceColor = selectedPiece?.id[1];
+      const pieceOnTargetColor = pieceOnTarget?.id[1];
+      console.log(pieceOnTargetColor, pieceColor);
+      console.log(pieceOnTargetColor);
       if (isMoveLegal) {
-        selectedPiece.coordinates = possibleNewPosition;
+        console.log("jo");
+        if (!pieceOnTarget || pieceColor !== pieceOnTargetColor) {
+          console.log(pieceOnTarget, pieceColor, pieceOnTargetColor);
+          selectedPiece.coordinates = possibleNewPosition;
+        } 
+        if (pieceOnTarget && pieceColor !== pieceOnTargetColor) {
+          console.log("ojoj");
+          pieceOnTarget.coordinates = { x: -1, y: -1 };
+        }
       }
       clearBoard();
       renderPieces();
@@ -184,5 +191,13 @@ arr.forEach((col) => {
     board.appendChild(div);
   });
 });
+
+/* if (pieceOnTarget) {
+  if (pieceColor !== pieceOnTargetColor) {
+    pieceOnTarget.coordinates = { x: -1, y: -1 };
+  }
+  // console.log(pieceColor, pieceOnTargetColor);
+  return false;
+}*/
 
 renderPieces();

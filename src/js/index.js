@@ -35,7 +35,7 @@ const renderPieces = () => {
   });
 };
 
-const checkMove = (selectedPiece, possibleNewPosition) => {
+const checkMove = (selectedPiece, possibleNewPosition, pieceOnTarget) => {
   // const pieceType = selectedPiece.id[0];
   // const pieceColor = selectedPiece.id[1];
   // totéž kratší (destrukturalizace):
@@ -45,9 +45,6 @@ const checkMove = (selectedPiece, possibleNewPosition) => {
   const curY = selectedPiece.coordinates.y;
   const posX = possibleNewPosition.x;
   const posY = possibleNewPosition.y;
-  const pieceOnTarget = pieces
-    .find((piece) => compareCoords(piece.coordinates, possibleNewPosition));
-  // const pieceOnTargetColor = pieceOnTarget?.id[1];  
   if (pieceType === "p") {
     const direction = isPieceBlack ? -1 : 1;
     if (curX === posX) {
@@ -116,7 +113,6 @@ const checkMove = (selectedPiece, possibleNewPosition) => {
     }
   }
   if (pieceType === "k") {
-    console.log("aa");
     if ((posX === curX || posX === curX + 1 || posX === curX - 1)
       && (posY === curY || posY === curY + 1 || posY === curY - 1)) {
       return true;
@@ -152,22 +148,17 @@ arr.forEach((col) => {
         : e.target.id;
       const possibleNewPosition = getPosFromDivId(targetDivId);
       const selectedPiece = pieces.find((el) => el.id === idOfPieceBeingMoved);
-      const isMoveLegal = checkMove(selectedPiece, possibleNewPosition);
       const pieceOnTarget = pieces
         .find((piece) => compareCoords(piece.coordinates, possibleNewPosition));
-      console.log(pieceOnTarget); 
-      const pieceColor = selectedPiece?.id[1];
+      const isMoveLegal = checkMove(selectedPiece, possibleNewPosition, pieceOnTarget);
+      const pieceColor = selectedPiece.id[1];
       const pieceOnTargetColor = pieceOnTarget?.id[1];
-      console.log(pieceOnTargetColor, pieceColor);
-      console.log(pieceOnTargetColor);
       if (isMoveLegal) {
-        console.log("jo");
         if (!pieceOnTarget || pieceColor !== pieceOnTargetColor) {
-          console.log(pieceOnTarget, pieceColor, pieceOnTargetColor);
+          // console.log(pieceOnTarget, pieceColor, pieceOnTargetColor);
           selectedPiece.coordinates = possibleNewPosition;
-        } 
+        }
         if (pieceOnTarget && pieceColor !== pieceOnTargetColor) {
-          console.log("ojoj");
           pieceOnTarget.coordinates = { x: -1, y: -1 };
         }
       }
@@ -178,13 +169,5 @@ arr.forEach((col) => {
     board.appendChild(div);
   });
 });
-
-/* if (pieceOnTarget) {
-  if (pieceColor !== pieceOnTargetColor) {
-    pieceOnTarget.coordinates = { x: -1, y: -1 };
-  }
-  // console.log(pieceColor, pieceOnTargetColor);
-  return false;
-}*/
 
 renderPieces();

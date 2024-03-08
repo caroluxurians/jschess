@@ -35,6 +35,11 @@ const renderPieces = () => {
   });
 };
 
+let isWhitePlaying = true;
+const switchPlayerTurn = () => {
+  isWhitePlaying = !isWhitePlaying;
+}
+
 const checkMove = (selectedPiece, possibleNewPosition, pieceOnTarget) => {
   // const pieceType = selectedPiece.id[0];
   // const pieceColor = selectedPiece.id[1];
@@ -45,9 +50,15 @@ const checkMove = (selectedPiece, possibleNewPosition, pieceOnTarget) => {
   const curY = selectedPiece.coordinates.y;
   const posX = possibleNewPosition.x;
   const posY = possibleNewPosition.y;
+
+  if ((!isWhitePlaying && pieceColor === "w")
+    || (isWhitePlaying && pieceColor === "b")) {
+    return false;
+  }
+
   if (pieceType === "p") {
     const direction = isPieceBlack ? -1 : 1;
-    if (curX === posX) {
+    if (curX === posX && !pieceOnTarget) {
       if (curY === posY + 1 * direction) {
         return true;
       }
@@ -153,7 +164,8 @@ arr.forEach((col) => {
       const isMoveLegal = checkMove(selectedPiece, possibleNewPosition, pieceOnTarget);
       const pieceColor = selectedPiece.id[1];
       const pieceOnTargetColor = pieceOnTarget?.id[1];
-      if (isMoveLegal) {
+      if (isMoveLegal && pieceOnTarget?.id[0] !== "k") {
+        switchPlayerTurn();
         if (!pieceOnTarget || pieceColor !== pieceOnTargetColor) {
           // console.log(pieceOnTarget, pieceColor, pieceOnTargetColor);
           selectedPiece.coordinates = possibleNewPosition;

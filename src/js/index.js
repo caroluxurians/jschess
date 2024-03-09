@@ -8,6 +8,24 @@ const arr = [0, 1, 2, 3, 4, 5, 6, 7];
 
 let idOfPieceBeingMoved = null;
 
+let isWhitePlaying = true;
+
+const highlightPlayerOnTurn = () => {
+  const whiteText = document.getElementById("whiteText");
+  const blackText = document.getElementById("blackText");
+  whiteText.classList.toggle("highlightWhite");
+  whiteText.classList.toggle("hide");
+
+  blackText.classList.toggle("highlightBlack");
+  blackText.classList.toggle("hide");
+};
+
+const switchPlayerTurn = () => {
+  console.log(isWhitePlaying);
+  isWhitePlaying = !isWhitePlaying;
+  highlightPlayerOnTurn();
+};
+
 const clearBoard = () => {
   board.childNodes.forEach((el) => { el.innerHTML = ""; });
   trash.innerHTML = "";
@@ -34,11 +52,6 @@ const renderPieces = () => {
     }
   });
 };
-
-let isWhitePlaying = true;
-const switchPlayerTurn = () => {
-  isWhitePlaying = !isWhitePlaying;
-}
 
 const checkMove = (selectedPiece, possibleNewPosition, pieceOnTarget) => {
   // const pieceType = selectedPiece.id[0];

@@ -103,3 +103,13 @@ h2 {
     background-color: rgba(167, 141, 141, 0);
     margin: 5px 0px 0px 0px;
 }
+
+.highlightWhite {
+    background-color: white;
+}
+.highlightBlack {
+    background-color: black;
+}
+.hide {
+    display: none;
+}

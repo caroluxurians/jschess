@@ -1,1 +1,1 @@
-# jednoduchá web šablona
+# chess in vanilla js
